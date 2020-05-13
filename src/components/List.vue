@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>About page</h1>
+    <div class="list-content">
+      <h5>{{ listHeader }}</h5>
+    </div>
   </div>
 </template>
 

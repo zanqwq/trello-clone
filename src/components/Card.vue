@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>About page</h1>
+  <div class="card">
+    <div class="card-content"></div>
   </div>
 </template>
 
