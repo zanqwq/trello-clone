@@ -12,14 +12,41 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    ADD_BOARD(state, { board }) {
-      state.user.boards.push(board);
+    ADD_BOARD(state, { boards, board }) {
+      boards.push(board);
     },
-    ADD_LIST(state, { board, list }) {
-      board.lists.push(list);
+    ADD_LIST(state, { lists, list }) {
+      lists.push(list);
     },
-    ADD_CARD(state, { list, card }) {
-      list.cards.push(card);
+    ADD_CARD(state, { cards, card }) {
+      cards.push(card);
+    },
+    REMOVE_BOARD(state, { boards, boardIndex }) {
+      boards.splice(boardIndex, 1);
+    },
+    REMOVE_LIST(state, { lists, listIndex }) {
+      lists.splice(listIndex, 1);
+    },
+    REMOVE_CARD(state, { cards, cardIndex }) {
+      cards.splice(cardIndex, 1);
+    },
+    EDIT_BOARD_TITLE(state, { board, title }) {
+      board.title = title;
+    },
+    EDIT_LIST_TITLE(state, { list, title }) {
+      list.title = title;
+    },
+    EDIT_CARD(state, { card, title, description }) {
+      card.title = title;
+      card.description = description;
+    },
+    MOVE_LIST(state, { lists, fromListIndex, toListIndex }) {
+      let fromList = lists.splice(fromListIndex, 1)[0];
+      lists.splice(toListIndex, 0, fromList);
+    },
+    MOVE_CARD(state, { fromCards, toCards, fromCardIndex, toCardIndex }) {
+      let fromCard = fromCards.splice(fromCardIndex, 1)[0];
+      toCards.splice(toCardIndex, 0, fromCard);
     }
   },
   actions: {},
