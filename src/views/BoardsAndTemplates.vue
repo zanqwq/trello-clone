@@ -23,7 +23,7 @@
       <div class="all-boards w-100 ml-5">
         <template v-if="$route.name === 'user-boards'">
           <div class="d-flex align-items-start flex-wrap">
-            <div v-for="board of user.boards" :key="board.id">
+            <div v-for="(board, index) of user.boards" :key="board.id">
               <router-link
                 class="text-decoration-none"
                 :to="{
@@ -32,9 +32,14 @@
                 }"
               >
                 <div
-                  class="board-thumnail mr-4 mb-4 font-weight-bold rounded-lg"
+                  class="position-relative board-thumnail mr-4 mb-4 font-weight-bold rounded-lg"
                 >
                   <p>{{ board.title }}</p>
+                  <b-icon
+                    class="remove-board"
+                    icon="trash"
+                    @click.prevent="removeBoard(index)"
+                  />
                 </div>
               </router-link>
             </div>
@@ -421,8 +426,14 @@ export default {
         title: e.target.value,
         lists: []
       };
-      this.$store.commit("ADD_BOARD", { board });
+      this.$store.commit("ADD_BOARD", { boards: this.user.boards, board });
       e.target.value = "";
+    },
+    removeBoard(boardIndex) {
+      this.$store.commit("REMOVE_BOARD", {
+        boards: this.user.boards,
+        boardIndex
+      });
     }
   },
   components: {
@@ -500,5 +511,32 @@ export default {
   transform: scale(1);
   box-shadow: 0px 2px 5px 1px rgb(153, 153, 153);
   outline: none;
+}
+
+.remove-board {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+
+  width: 20px;
+  height: 20px;
+
+  color: var(--danger);
+
+  opacity: 0;
+  transform: translateX(20px);
+
+  transition: all 0.3s ease-in-out;
+}
+
+.board-thumnail:hover .remove-board {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.remove-board:hover {
+  color: red;
+  width: 30px;
+  height: 30px;
 }
 </style>
