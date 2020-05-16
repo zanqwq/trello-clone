@@ -14,10 +14,12 @@ import Activity from "../views/user/Activity.vue";
 import Cards from "../views/user/Cards.vue";
 import Account from "../views/user/Account.vue";
 import Billing from "../views/user/Billing.vue";
-import Login from "../views/Login";
+import Login from "../views/Login.vue";
+import Logout from "../views/Logout.vue";
 import Signup from "../views/Signup";
 import NotFound from "../views/NotFound.vue";
 import Test from "../views/Test.vue";
+import store from "../store/index.js";
 
 Vue.use(VueRouter);
 
@@ -38,6 +40,11 @@ const routes = [
     component: Login
   },
   {
+    path: "/logout",
+    name: "logout",
+    component: Logout
+  },
+  {
     path: "/signup",
     name: "signup",
     component: Signup
@@ -50,7 +57,13 @@ const routes = [
   {
     path: "/:username/boards",
     name: "user-boards",
-    component: BoardsAndTemplates
+    component: BoardsAndTemplates,
+    beforeEnter(to, from, next) {
+      if (to.params.username && !store.state.user) {
+        next({ name: "not-found" });
+      }
+      next();
+    }
   },
   {
     path: "/board/:id/:title",
@@ -86,6 +99,14 @@ const routes = [
     path: "/:username",
     name: "user",
     component: User,
+    beforeEnter(to, from, next) {
+      if (
+        !store.state.user ||
+        store.state.user.username !== to.params.username
+      ) {
+        next({ name: "not-found" });
+      }
+    },
     children: [
       {
         path: "profile",
