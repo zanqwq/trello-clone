@@ -16,17 +16,17 @@
         </template>
         <template v-else>
           <b-navbar-nav>
-            <b-button size="sm" class="mr-2">
+            <b-button size="sm" class="mr-1">
               <b-icon icon="grid3x3-gap"></b-icon>
             </b-button>
 
-            <b-button size="sm" class="mr-2">
+            <b-button size="sm" class="mr-1">
               <b-icon icon="house-fill"></b-icon>
             </b-button>
 
             <b-button size="sm">
               <b-icon icon="layout-three-columns"></b-icon>
-              <span class="ml-2">Boards</span>
+              <span class="ml-1">Boards</span>
             </b-button>
           </b-navbar-nav>
         </template>
@@ -35,7 +35,7 @@
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <template v-if="!hasLogin">
-          <b-button size="sm" class="mr-2" variant="success">
+          <b-button size="sm" class="mr-1" variant="success">
             Sign Up
           </b-button>
           <b-button size="sm" variant="primary">
@@ -44,15 +44,15 @@
         </template>
 
         <template v-else>
-          <b-button size="sm" class="mr-2">
+          <b-button size="sm" class="mr-1">
             <b-icon icon="plus"></b-icon>
           </b-button>
 
-          <b-button size="sm" class="mr-2">
+          <b-button size="sm" class="mr-1">
             <b-icon icon="info-circle"></b-icon>
           </b-button>
 
-          <b-button size="sm" class="mr-2">
+          <b-button size="sm" class="mr-1">
             <b-icon icon="bell"></b-icon>
           </b-button>
 
@@ -65,10 +65,9 @@
 
 <script>
 export default {
-  props: {
-    hasLogin: {
-      type: Boolean,
-      required: true
+  computed: {
+    hasLogin() {
+      return this.$store.state.user !== undefined;
     }
   }
 };

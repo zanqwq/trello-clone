@@ -14,7 +14,13 @@
           </b-button>
         </template>
         <template v-else-if="hasLogin">
-          <b-button variant="primary" :to="{ name: 'user-boards' }">
+          <b-button
+            variant="primary"
+            :to="{
+              name: 'user-boards',
+              params: { username: this.$store.state.user.name }
+            }"
+          >
             Go to Your Boards
           </b-button>
         </template>
@@ -25,10 +31,9 @@
 
 <script>
 export default {
-  props: {
-    hasLogin: {
-      type: Boolean,
-      default: false
+  computed: {
+    hasLogin() {
+      return this.$store.state.user !== undefined;
     }
   }
 };
