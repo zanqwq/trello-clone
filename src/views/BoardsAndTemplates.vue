@@ -1,12 +1,16 @@
 <template>
   <div>
-    <Header class="header" :hasLogin="true" />
+    <Header />
 
     <div class="body d-flex align-items-start justify-content-center">
       <div class="sidebar ml-2">
         <router-link
+          v-if="user !== undefined"
           class="mb-3 d-block text-decoration-none"
-          :to="{ name: 'user-boards', params: { username: 'zan' } }"
+          :to="{
+            name: 'user-boards',
+            params: { username: user.username }
+          }"
         >
           <b-icon icon="layout-three-columns"></b-icon>
           Boards

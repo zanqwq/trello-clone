@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :hasLogin="false" />
+    <Navbar />
 
     <b-jumbotron fluid bg-variant="dark" text-variant="white" class="mt-3">
       <template v-slot:header>
