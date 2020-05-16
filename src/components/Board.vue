@@ -14,11 +14,32 @@
 
     <div class="body d-flex align-items-start overflow-auto">
       <!-- lists of board -->
-      <div
+      <List
+        class="ml-3 p-2 rounded shadow"
+        v-for="(list, listIndex) of lists"
+        :key="list.id"
+        :lists="lists"
+        :listIndex="listIndex"
+        :title="list.title"
+        :cards="list.cards"
+        @edit-list-title="editListTitle($event, list)"
+        @edit-card="setCardDataForModal($event)"
+        @remove-list="removeList(listIndex)"
+        @drag-start="
+          ondragstart($event, {
+            dragType: 'list',
+            fromListIndex: listIndex
+          })
+        "
+        @drop-on-list="dropOnList($event, listIndex)"
+      >
+      </List>
+
+      <!-- <div
         class="list ml-3 p-2 rounded shadow"
         v-for="(list, listIndex) of board.lists"
         :key="listIndex"
-        :draggable="!isEditingBoardTitle"
+        :draggable="!isEditingListTitle"
         @dragstart.self="
           ondragstart($event, {
             dragType: 'list',
@@ -36,8 +57,8 @@
               class="list-title-editor d-inline-block px-2 border-0 rounded-sm"
               :value="list.title"
               @input="editListTitle($event, list)"
-              @focus="isEditingBoardTitle = true"
-              @blur="isEditingBoardTitle = false"
+              @focus="isEditingListTitle = true"
+              @blur="isEditingListTitle = false"
               @keyup.enter="$event.target.blur()"
             />
             <b-button
@@ -50,7 +71,6 @@
             </b-button>
           </div>
 
-          <!-- cards of list -->
           <div
             class="card my-2 p-2 rounded-lg text-wrap shadow-sm"
             v-for="(card, cardIndex) of list.cards"
@@ -89,7 +109,6 @@
             </div>
           </div>
 
-          <!-- card adder -->
           <input
             type="text"
             class="card-adder pl-1 w-100 bg-transparent"
@@ -97,10 +116,10 @@
             @keyup.enter="addCard($event, list.cards)"
           />
         </template>
-      </div>
+      </div> -->
 
       <!-- list adder -->
-      <div class="list ml-3">
+      <div class="ml-3">
         <input
           type="text"
           class="list-adder w-100"
@@ -110,7 +129,7 @@
       </div>
     </div>
 
-    <b-modal id="modal" ok-title="Save" @ok="editCard">
+    <b-modal id="modal" ok-title="Save" @ok="editCard" @show="onshow($event)">
       <template #modal-title>
         <input
           type="text"
@@ -132,12 +151,14 @@
 
 <script>
 import Header from "@/components/Header.vue";
+import List from "@/components/List.vue";
 import { mapGetters } from "vuex";
 import { uid } from "@/utils/utils.js";
+
 export default {
   data() {
     return {
-      isEditingBoardTitle: false,
+      isEditingListTitle: false,
       editedCard: null,
       editedCardTitle: "",
       editedCardDescription: "",
@@ -148,6 +169,9 @@ export default {
     ...mapGetters(["getBoardById"]),
     board() {
       return this.getBoardById(this.$route.params.id);
+    },
+    lists() {
+      return this.board.lists;
     }
   },
   methods: {
@@ -162,27 +186,16 @@ export default {
 
       e.target.value = "";
     },
-    addCard(e, cards) {
-      let card = {
-        id: uid(),
-        title: e.target.value,
-        description: ""
-      };
-
-      this.$store.commit("ADD_CARD", { cards, card });
-
-      e.target.value = "";
-    },
     removeList(listIndex) {
       this.$store.commit("REMOVE_LIST", { lists: this.board.lists, listIndex });
     },
-    removeCard(list, cardIndex) {
-      this.$store.commit("REMOVE_CARD", { cards: list.cards, cardIndex });
-    },
     setCardDataForModal(card) {
+      console.log("set data");
       this.editedCard = card;
       this.editedCardTitle = card.title;
       this.editedCardDescription = card.description;
+
+      this.$root.$emit("bv::show::modal", "modal");
     },
     editBoardTitle(e) {
       this.$store.commit("EDIT_BOARD_TITLE", {
@@ -203,25 +216,28 @@ export default {
     },
     ondragstart(e, data) {
       e.dataTransfer.dropEffect = "move";
+      e.dataTransfer.setData("data", JSON.stringify(data));
 
-      this.dataTransfer = { ...data };
+      // this.dataTransfer = { ...data };
     },
     dropOnList(e, toListIndex) {
-      let dataTransfer = this.dataTransfer;
-      let dragType = dataTransfer.dragType;
+      let data = JSON.parse(e.dataTransfer.getData("data"));
+      let dragType = data.dragType;
 
       let listDropOnList = dragType === "list";
       let cardDropOnList = dragType === "card";
 
       if (listDropOnList) {
         let lists = this.board.lists;
-        let fromListIndex = dataTransfer.fromListIndex;
+        let fromListIndex = data.fromListIndex;
         this.$store.commit("MOVE_LIST", { lists, fromListIndex, toListIndex });
         //
       } else if (cardDropOnList) {
-        let fromCards = dataTransfer.fromCards;
-        let fromCardIndex = dataTransfer.fromCardIndex;
-        let toCards = this.board.lists[toListIndex].cards;
+        let lists = this.board.lists;
+        let fromListIndex = data.fromListIndex;
+        let fromCards = lists[fromListIndex].cards;
+        let fromCardIndex = data.fromCardIndex;
+        let toCards = lists[toListIndex].cards;
         // if a card is frop on a list then put this card at the end of those cards
         let toCardIndex = toCards.length;
 
@@ -262,10 +278,15 @@ export default {
           toCardIndex
         });
       }
+    },
+    onshow(e) {
+      console.log("show modal");
+      console.log(e);
     }
   },
   components: {
-    Header
+    Header,
+    List
   }
 };
 </script>
@@ -280,7 +301,7 @@ export default {
 .board-title-editor {
   height: 50px;
   outline: none;
-  color: #ffffff;
+  color: #f9fffc;
   font-size: xx-large;
   background: transparent;
   transition: all 0.1s ease-in-out;
@@ -306,54 +327,15 @@ export default {
   background-color: #38a89d;
 }
 
-.list {
+.list-adder {
   min-width: 275px;
   max-width: 350px;
-
-  word-wrap: break-word;
-  overflow: hidden;
-  color: #172b4d;
-  background: #dae1e7;
-}
-
-.list:hover {
-  cursor: pointer;
-}
-
-.list:hover .remove-list {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.list-adder {
   height: 3rem;
   border: none;
 }
 
 .list-adder:focus {
   outline: none;
-}
-
-.remove-list {
-  opacity: 0;
-  transform: translateX(20px);
-  transition: all 0.3s ease-in-out;
-}
-
-.list-title-editor {
-  background: transparent;
-  transition: all 0.1s ease-in-out;
-}
-
-.list-title-editor:hover {
-  background: rgb(204, 204, 204);
-  cursor: pointer;
-}
-
-.list-title-editor:focus {
-  outline: none;
-  background: white;
-  cursor: text;
 }
 
 .card {
@@ -367,31 +349,6 @@ export default {
   opacity: 0;
   transform: translateX(20px);
   transition: all 0.3s ease-in-out;
-}
-
-.card:hover {
-  background: #e9e9e9;
-  cursor: pointer;
-}
-
-.card:hover .remove-card,
-.card:hover .edit-card {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.card-adder {
-  outline: none;
-  border: none;
-}
-
-.card-adder::placeholder {
-  color: var(--gray);
-}
-
-.card-adder:focus {
-  outline: none;
-  border: none;
 }
 
 .card-title-editor,
