@@ -18,7 +18,7 @@
             variant="primary"
             :to="{
               name: 'user-boards',
-              params: { username: this.$store.state.user.name }
+              params: { username: this.$store.state.user.username }
             }"
           >
             Go to Your Boards
