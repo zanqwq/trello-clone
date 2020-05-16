@@ -7,11 +7,9 @@
     @dragover.prevent
     @drop.prevent="$emit('drop-on-card', $event)"
   >
-    <div>
-      {{ title }}
-
+    <div class="clearfix">
       <b-button
-        class="float-right remove-card"
+        class="float-right remove-card-btn"
         variant="danger"
         size="sm"
         @click="$emit('remove-card')"
@@ -20,13 +18,15 @@
       </b-button>
 
       <b-button
-        class="float-right mr-1 edit-card"
+        class="float-right mr-1 edit-card-btn"
         variant="success"
         size="sm"
         @click="$emit('edit-card')"
       >
         <b-icon icon="pencil"></b-icon>
       </b-button>
+
+      <h6>{{ title }}</h6>
     </div>
   </div>
 </template>
@@ -42,11 +42,6 @@ export default {
       type: String,
       default: ""
     }
-  },
-  methods: {
-    setCardDataForModal() {
-      this.$root.$emit("bv::show::modal", "modal");
-    }
   }
 };
 </script>
@@ -58,8 +53,8 @@ export default {
   overflow: hidden;
 }
 
-.remove-card,
-.edit-card {
+.remove-card-btn,
+.edit-card-btn {
   opacity: 0;
   transform: translateX(20px);
   transition: all 0.3s ease-in-out;
@@ -70,8 +65,8 @@ export default {
   cursor: pointer;
 }
 
-.card:hover .remove-card,
-.card:hover .edit-card {
+.card:hover .remove-card-btn,
+.card:hover .edit-card-btn {
   opacity: 1;
   transform: translateX(0);
 }

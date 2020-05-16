@@ -1,55 +1,57 @@
 <template>
   <div
-    class="list"
+    class="list d-flex flex-column"
     :draggable="!isEditingListTitle"
     @dragstart.self="$emit('drag-start', $event)"
     @dragenter.prevent
     @dragover.prevent
     @drop.prevent="$emit('drop-on-list', $event)"
   >
-    <div class="clearfix">
-      <input
-        type="text"
-        class="list-title-editor d-inline-block px-2 border-0 rounded-sm"
-        :value="title"
-        @input="$emit('edit-list-title', $event)"
-        @focus="isEditingListTitle = true"
-        @blur="isEditingListTitle = false"
-        @keyup.enter="$event.target.blur()"
-      />
+    <div class="list-header position-relative clearfix">
       <b-button
-        class="float-right remove-list"
+        class="float-right remove-list-btn"
         variant="danger"
         size="sm"
         @click="$emit('remove-list')"
       >
         <b-icon icon="trash" />
       </b-button>
+      <input
+        type="text"
+        class="list-title-editor p-2 border-0 rounded-sm"
+        placeholder="edit your card title here"
+        :value="title"
+        @input="$emit('edit-list-title', $event)"
+        @focus="isEditingListTitle = true"
+        @blur="isEditingListTitle = false"
+        @keyup.enter="$event.target.blur()"
+      />
     </div>
 
-    <!-- cards of list -->
-    <Card
-      class="my-2 p-2 rounded-lg text-wrap shadow-sm"
-      v-for="(card, cardIndex) of cards"
-      :key="card.id"
-      :title="card.title"
-      :description="card.description"
-      @edit-card="$emit('edit-card', card)"
-      @remove-card="removeCard(cards, cardIndex)"
-      @drag-start="
-        ondragstart($event, {
-          dragType: 'card',
-          fromListIndex: listIndex,
-          fromCardIndex: cardIndex
-        })
-      "
-      @drop-on-card="dropOnCard($event, cards, cardIndex)"
-    ></Card>
+    <div class="list-cards position-relative">
+      <Card
+        class="my-1 px-2 py-1 rounded-lg text-wrap shadow-sm"
+        v-for="(card, cardIndex) of cards"
+        :key="card.id"
+        :title="card.title"
+        :description="card.description"
+        @edit-card="$emit('edit-card', card)"
+        @remove-card="removeCard(cards, cardIndex)"
+        @drag-start="
+          ondragstart($event, {
+            dragType: 'card',
+            fromListIndex: listIndex,
+            fromCardIndex: cardIndex
+          })
+        "
+        @drop-on-card="dropOnCard($event, cards, cardIndex)"
+      ></Card>
+    </div>
 
     <!-- card adder -->
     <input
       type="text"
-      class="card-adder pl-1 w-100 bg-transparent"
+      class="card-adder my-2 px-1 border-0 w-100"
       placeholder="+ Add another card "
       @keyup.enter="addCard($event, cards)"
     />
@@ -146,9 +148,11 @@ export default {
 .list {
   min-width: 275px;
   max-width: 350px;
+  max-height: 80%;
 
   word-wrap: break-word;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   color: #172b4d;
   background: #dae1e7;
 }
@@ -157,39 +161,54 @@ export default {
   cursor: pointer;
 }
 
-.list:hover .remove-list {
+.list-header {
+  min-height: 20px;
+  flex: 0 0 auto;
+}
+
+.list-cards {
+  top: 0px;
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.list:hover .remove-list-btn {
   opacity: 1;
   transform: translateX(0);
 }
 
-.remove-list {
+.remove-list-btn {
   opacity: 0;
   transform: translateX(20px);
   transition: all 0.3s ease-in-out;
 }
 
-.list-title-editor {
+.list-title-editor,
+.card-adder {
+  outline: none;
   background: transparent;
   transition: all 0.1s ease-in-out;
 }
 
-.list-title-editor:hover {
+.list-title-editor:hover,
+.card-adder:hover {
   background: rgb(204, 204, 204);
   cursor: pointer;
 }
 
-.list-title-editor:focus {
-  outline: none;
+.list-title-editor:focus,
+.card-adder:focus {
   background: white;
   cursor: text;
 }
 
-.card-adder {
-  outline: none;
-  border: none;
-}
-
+.list-title-editor::placeholder,
 .card-adder::placeholder {
   color: var(--gray);
+}
+
+.card-adder {
+  height: 40px;
 }
 </style>

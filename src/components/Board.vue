@@ -23,8 +23,8 @@
         :title="list.title"
         :cards="list.cards"
         @edit-list-title="editListTitle($event, list)"
-        @edit-card="setCardDataForModal($event)"
         @remove-list="removeList(listIndex)"
+        @edit-card="openModal($event)"
         @drag-start="
           ondragstart($event, {
             dragType: 'list',
@@ -34,89 +34,6 @@
         @drop-on-list="dropOnList($event, listIndex)"
       >
       </List>
-
-      <!-- <div
-        class="list ml-3 p-2 rounded shadow"
-        v-for="(list, listIndex) of board.lists"
-        :key="listIndex"
-        :draggable="!isEditingListTitle"
-        @dragstart.self="
-          ondragstart($event, {
-            dragType: 'list',
-            fromListIndex: listIndex
-          })
-        "
-        @dragenter.prevent
-        @dragover.prevent
-        @drop.prevent="dropOnList($event, listIndex)"
-      >
-        <template>
-          <div class="clearfix">
-            <input
-              type="text"
-              class="list-title-editor d-inline-block px-2 border-0 rounded-sm"
-              :value="list.title"
-              @input="editListTitle($event, list)"
-              @focus="isEditingListTitle = true"
-              @blur="isEditingListTitle = false"
-              @keyup.enter="$event.target.blur()"
-            />
-            <b-button
-              class="float-right remove-list"
-              variant="danger"
-              size="sm"
-              @click="removeList(listIndex)"
-            >
-              <b-icon icon="trash" />
-            </b-button>
-          </div>
-
-          <div
-            class="card my-2 p-2 rounded-lg text-wrap shadow-sm"
-            v-for="(card, cardIndex) of list.cards"
-            :key="cardIndex"
-            draggable="true"
-            @dragstart.self="
-              ondragstart($event, {
-                dragType: 'card',
-                fromCards: list.cards,
-                fromCardIndex: cardIndex
-              })
-            "
-            @dragenter.prevent
-            @dragover.prevent
-            @drop.prevent="dropOnCard($event, list.cards, cardIndex)"
-          >
-            <div>
-              {{ card.title }}
-              <b-button
-                class="float-right remove-card"
-                variant="danger"
-                size="sm"
-                @click="removeCard(list, cardIndex)"
-              >
-                <b-icon icon="trash" />
-              </b-button>
-              <b-button
-                class="float-right mr-1 edit-card"
-                variant="success"
-                size="sm"
-                @click="setCardDataForModal(card)"
-                v-b-modal.modal
-              >
-                <b-icon icon="pencil" />
-              </b-button>
-            </div>
-          </div>
-
-          <input
-            type="text"
-            class="card-adder pl-1 w-100 bg-transparent"
-            placeholder="+ Add another card "
-            @keyup.enter="addCard($event, list.cards)"
-          />
-        </template>
-      </div> -->
 
       <!-- list adder -->
       <div class="ml-3">
@@ -129,7 +46,7 @@
       </div>
     </div>
 
-    <b-modal id="modal" ok-title="Save" @ok="editCard" @show="onshow($event)">
+    <b-modal id="card-modal" ok-title="Save" @ok="editCard">
       <template #modal-title>
         <input
           type="text"
@@ -161,8 +78,7 @@ export default {
       isEditingListTitle: false,
       editedCard: null,
       editedCardTitle: "",
-      editedCardDescription: "",
-      dataTransfer: {}
+      editedCardDescription: ""
     };
   },
   computed: {
@@ -189,13 +105,12 @@ export default {
     removeList(listIndex) {
       this.$store.commit("REMOVE_LIST", { lists: this.board.lists, listIndex });
     },
-    setCardDataForModal(card) {
-      console.log("set data");
+    openModal(card) {
       this.editedCard = card;
       this.editedCardTitle = card.title;
       this.editedCardDescription = card.description;
 
-      this.$root.$emit("bv::show::modal", "modal");
+      this.$root.$emit("bv::show::modal", "card-modal");
     },
     editBoardTitle(e) {
       this.$store.commit("EDIT_BOARD_TITLE", {
@@ -217,8 +132,6 @@ export default {
     ondragstart(e, data) {
       e.dataTransfer.dropEffect = "move";
       e.dataTransfer.setData("data", JSON.stringify(data));
-
-      // this.dataTransfer = { ...data };
     },
     dropOnList(e, toListIndex) {
       let data = JSON.parse(e.dataTransfer.getData("data"));
@@ -248,40 +161,6 @@ export default {
           toCardIndex
         });
       }
-    },
-    dropOnCard(e, toCards, toCardIndex) {
-      let dataTransfer = this.dataTransfer;
-      let dragType = dataTransfer.dragType;
-
-      let listDropOnCard = dragType === "list";
-      let cardDropOnCard = dragType === "card";
-
-      if (listDropOnCard) {
-        // if a list is drop on a card
-        // then just return
-        // and let the drop event propagates to "dropOnList",
-        // and let the "dropOnList" handler handle this event
-        return;
-      } else if (cardDropOnCard) {
-        // if a card is drop on a card
-        // then we need to stop the event propagation to
-        // in case that the "dropOnList" add a duplicate card for us
-        e.stopPropagation();
-
-        let fromCards = dataTransfer.fromCards;
-        let fromCardIndex = dataTransfer.fromCardIndex;
-
-        this.$store.commit("MOVE_CARD", {
-          fromCards,
-          toCards,
-          fromCardIndex,
-          toCardIndex
-        });
-      }
-    },
-    onshow(e) {
-      console.log("show modal");
-      console.log(e);
     }
   },
   components: {
@@ -336,19 +215,6 @@ export default {
 
 .list-adder:focus {
   outline: none;
-}
-
-.card {
-  background: var(--white);
-  transition: all 0.3s ease-in-out;
-  overflow: hidden;
-}
-
-.remove-card,
-.edit-card {
-  opacity: 0;
-  transform: translateX(20px);
-  transition: all 0.3s ease-in-out;
 }
 
 .card-title-editor,
