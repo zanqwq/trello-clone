@@ -5,11 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: {
-      name: "zan",
-      id: "114514",
-      boards: []
-    }
+    user: undefined
   },
   mutations: {
     ADD_BOARD(state, { boards, board }) {
