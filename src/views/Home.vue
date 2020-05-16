@@ -21,9 +21,15 @@
       <b-form>
         <b-form-group>
           <b-input-group class="mt-3">
-            <b-form-input placeholder="Email"></b-form-input>
+            <b-form-input
+              type="email"
+              v-model="email"
+              placeholder="enter your Email address"
+            ></b-form-input>
             <b-input-group-append>
-              <b-button variant="success">Sign Up - It's Free!</b-button>
+              <b-button :to="{ name: 'signup' }" variant="success">
+                Sign Up - It's Free!
+              </b-button>
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
@@ -45,7 +51,7 @@
             vacation, Trello helps your team stay organized.
           </p>
           <div class="text-sm-center text-md-left text-center">
-            <b-button href="#" variant="primary">
+            <b-button :to="{ name: 'signup' }" href="#" variant="primary">
               <span class="mr-3">Start doing</span>
               <b-icon icon="arrow-right" animation="cylon"></b-icon>
             </b-button>
@@ -263,7 +269,9 @@
             using Trello to get more done.
           </p>
           <div class="text-center">
-            <b-button variant="success">Get Started - It's Free!</b-button>
+            <b-button :to="{ name: 'signup' }" variant="success">
+              Get Started - It's Free!
+            </b-button>
           </div>
         </b-col>
       </b-row>
@@ -279,13 +287,18 @@ import Navbar from "@/components/Navbar.vue";
 export default {
   data() {
     return {
-      hasLogin: false,
-      slide: 0
+      slide: 0,
+      email: ""
     };
   },
   components: {
     Footer,
     Navbar
+  },
+  beforeRouteLeave(to, from, next) {
+    to.params.dataTransfer = {};
+    to.params.dataTransfer.email = this.email;
+    next();
   }
 };
 </script>
