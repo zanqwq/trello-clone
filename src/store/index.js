@@ -7,12 +7,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   plugins: [saveStatePlugin],
   state: {
-    // user: {
-    //   username: "zan",
-    //   email: "zanqwq@gmail.com",
-    //   id: "123",
-    //   boards: []
-    // },
     user: JSON.parse(
       localStorage.getItem(localStorage.getItem("currentUserEmail"))
     )
