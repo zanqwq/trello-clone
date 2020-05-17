@@ -1,13 +1,38 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { saveStatePlugin } from "../utils/utils.js";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  plugins: [saveStatePlugin],
   state: {
-    user: undefined
+    // user: {
+    //   username: "zan",
+    //   email: "zanqwq@gmail.com",
+    //   id: "123",
+    //   boards: []
+    // },
+    user: JSON.parse(
+      localStorage.getItem(localStorage.getItem("currentUserEmail"))
+    )
   },
   mutations: {
+    SIGNUP_USER(state, { user }) {
+      // use email address to sign up user
+      localStorage.setItem(user.email, JSON.stringify(user));
+      localStorage.setItem("currentUserEmail", user.email);
+      state.user = user;
+    },
+    LOGIN_USER(state, { email }) {
+      // use email address to log in user and set the current user to this user
+      state.user = JSON.parse(localStorage.getItem(email));
+      localStorage.setItem("currentUserEmail", email);
+    },
+    LOGOUT_USER(state) {
+      state.user = null;
+      localStorage.setItem("currentUserEmail", "");
+    },
     ADD_BOARD(state, { boards, board }) {
       boards.push(board);
     },
