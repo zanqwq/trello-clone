@@ -35,10 +35,10 @@
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <template v-if="!hasLogin">
-          <b-button size="sm" class="mr-1" variant="success">
+          <b-button size="sm" class="mr-1" variant="success" to="/signup">
             Sign Up
           </b-button>
-          <b-button size="sm" variant="primary">
+          <b-button size="sm" variant="primary" to="/login">
             Log In
           </b-button>
         </template>
@@ -67,7 +67,7 @@
 export default {
   computed: {
     hasLogin() {
-      return this.$store.state.user !== undefined;
+      return this.$store.state.user;
     }
   }
 };

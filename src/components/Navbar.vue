@@ -33,7 +33,7 @@
 export default {
   computed: {
     hasLogin() {
-      return this.$store.state.user !== undefined;
+      return this.$store.state.user;
     }
   }
 };
