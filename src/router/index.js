@@ -42,7 +42,11 @@ const routes = [
   {
     path: "/logout",
     name: "logout",
-    component: Logout
+    component: Logout,
+    beforeEnter(to, from, next) {
+      store.commit("LOGOUT_USER");
+      next();
+    }
   },
   {
     path: "/signup",
@@ -59,9 +63,13 @@ const routes = [
     name: "user-boards",
     component: BoardsAndTemplates,
     beforeEnter(to, from, next) {
-      if (to.params.username && !store.state.user) {
+      if (
+        !store.state.user ||
+        to.params.username !== store.state.user.username
+      ) {
         next({ name: "not-found" });
       }
+      console.log(to.path);
       next();
     }
   },
@@ -106,6 +114,7 @@ const routes = [
       ) {
         next({ name: "not-found" });
       }
+      next();
     },
     children: [
       {
