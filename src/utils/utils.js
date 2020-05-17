@@ -7,6 +7,7 @@ export function uid() {
 
 export function saveStatePlugin(store) {
   store.subscribe((mutation, state) => {
+    if (!state.user) return;
     localStorage.setItem(state.user.email, JSON.stringify(state.user));
   });
 }
