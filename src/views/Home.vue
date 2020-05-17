@@ -296,8 +296,9 @@ export default {
     Navbar
   },
   beforeRouteLeave(to, from, next) {
-    to.params.dataTransfer = {};
-    to.params.dataTransfer.email = this.email;
+    if (to.name === "signup") {
+      to.params.email = this.email;
+    }
     next();
   }
 };

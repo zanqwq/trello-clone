@@ -5,7 +5,7 @@
     <div class="body d-flex align-items-start justify-content-center">
       <div class="sidebar ml-2">
         <router-link
-          v-if="user !== undefined"
+          v-if="user"
           class="mb-3 d-block text-decoration-none"
           :to="{
             name: 'user-boards',
