@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div class="mx-auto my-5 w-50 text-center">
+    <div class="wrapper mx-auto my-5 text-center">
       <h1>Trello clone</h1>
 
-      <b-form class="form my-5 p-3 border-secondary shadow">
+      <b-form
+        @submit.prevent="onsubmit"
+        class="form my-5 p-3 border-secondary shadow"
+      >
         <h6 class="mb-3">Sign up for your account</h6>
         <b-form-input
           class="my-3"
@@ -11,27 +14,28 @@
           required
           placeholder="Enter email"
           v-model="email"
-          @keyup.enter="signup"
-          @focus="accountIsExist = false"
+          :state="state"
+          @focus="state = null"
         ></b-form-input>
-        <p class="text-danger" v-if="accountIsExist">
-          this account has been registered, please choose another email
-        </p>
+
+        <b-form-invalid-feedback :state="state">
+          this account is not exist
+        </b-form-invalid-feedback>
         <b-form-input
-          type="text"
+          class="my-3"
           required
           placeholder="Enter username"
           v-model="username"
-          @keyup.enter="signup"
         ></b-form-input>
         <b-button
+          type="submit"
           class="my-3"
           block
           :disabled="!email || !username"
           variant="success"
-          @click="signup"
-          >continue</b-button
         >
+          Continue
+        </b-button>
         <p class="my-3 text-muted">OR</p>
         <b-button class="my-3" block>Continue with Google</b-button>
         <b-button class="my-3" block>Continue with Microsoft</b-button>
@@ -53,25 +57,26 @@ export default {
     return {
       email: "",
       username: "",
-      id: uid(),
-      accountIsExist: false
+      state: null
     };
   },
   methods: {
-    signup() {
+    onsubmit() {
       if (!this.email || !this.username) {
+        this.state = null;
         return;
       }
 
       if (localStorage.getItem(this.email)) {
-        this.accountIsExist = true;
+        // if this email has been registered
+        this.state = false;
         return;
       }
 
-      this.accountIsExist = false;
+      this.state = null;
       this.$store.commit("SIGNUP_USER", {
         user: {
-          id: this.id,
+          id: uid(),
           email: this.email,
           username: this.username,
           boards: []
@@ -86,18 +91,15 @@ export default {
   },
   components: {
     Footer
-  },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      if (to.params.email) {
-        vm.email = to.params.email;
-      }
-    });
   }
 };
 </script>
 
 <style scoped>
+.wrapper {
+  max-width: 400px;
+}
+
 .footer {
   bottom: 0px;
 

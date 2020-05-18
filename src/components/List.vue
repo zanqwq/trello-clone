@@ -1,7 +1,7 @@
 <template>
   <div
     class="list d-flex flex-column"
-    :draggable="!isEditingListTitle"
+    :draggable="!isEditing"
     @dragstart.self="$emit('drag-start', $event)"
     @dragenter.prevent
     @dragover.prevent
@@ -22,8 +22,8 @@
         placeholder="edit your card title here"
         :value="title"
         @input="$emit('edit-list-title', $event)"
-        @focus="isEditingListTitle = true"
-        @blur="isEditingListTitle = false"
+        @focus="isEditing = true"
+        @blur="isEditing = false"
         @keyup.enter="$event.target.blur()"
       />
     </div>
@@ -54,6 +54,8 @@
       class="card-adder my-2 px-1 border-0 w-100"
       placeholder="+ Add another card "
       @keyup.enter="addCard($event, cards)"
+      @focus="isEditing = true"
+      @blur="isEditing = false"
     />
   </div>
 </template>
@@ -83,7 +85,7 @@ export default {
   },
   data() {
     return {
-      isEditingListTitle: false
+      isEditing: false
     };
   },
   computed: {},

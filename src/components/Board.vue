@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :hasLogin="true" />
+    <Header />
 
     <div class="toolbar">
       <input

@@ -19,7 +19,7 @@ export default new Vuex.Store({
       state.user = user;
     },
     LOGIN_USER(state, { email }) {
-      // use email address to log in user and set the current user to this user
+      // use email address to log in user and set the current user email to this user email
       state.user = JSON.parse(localStorage.getItem(email));
       localStorage.setItem("currentUserEmail", email);
     },

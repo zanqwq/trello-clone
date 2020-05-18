@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div class="mx-auto my-5 w-50 text-center">
+    <div class="wrapper mx-auto my-5 text-center">
       <h1>Trello clone</h1>
 
-      <b-form class="form my-5 p-3 border-secondary shadow">
+      <b-form
+        @submit.prevent="onsubmit"
+        class="form my-5 p-3 border-secondary shadow"
+      >
         <h6 class="mb-3">Log in to Trello clone</h6>
         <b-form-input
           class="my-3"
@@ -11,19 +14,22 @@
           required
           placeholder="Enter email"
           v-model="email"
-          @keyup.enter="login"
+          :state="state"
+          @focus="state = null"
         ></b-form-input>
-        <p class="text-danger" v-if="!accountIsExist">
+
+        <b-form-invalid-feedback :state="state">
           this account is not exist
-        </p>
+        </b-form-invalid-feedback>
         <b-button
+          type="submit"
           class="my-3"
           block
           :disabled="!email"
           variant="success"
-          @click="login"
-          >Login</b-button
         >
+          Login
+        </b-button>
         <p class="my-3 text-muted">OR</p>
         <b-button class="my-3" block>Login with Google</b-button>
         <b-button class="my-3" block>Login with Microsoft</b-button>
@@ -43,24 +49,25 @@ export default {
   data() {
     return {
       email: "",
-      accountIsExist: true
+      state: null
     };
   },
   methods: {
-    login() {
+    onsubmit() {
       if (!this.email) {
-        this.accountIsExist = true;
+        this.state = null;
         return;
       }
 
       let user = JSON.parse(localStorage.getItem(this.email));
       if (!user) {
-        this.accountIsExist = false;
+        this.state = false;
         return;
       }
 
-      this.accountIsExist = true;
-      this.$store.commit("LOGIN_USER", { email: this.email });
+      this.state = null;
+      this.$store.commit("LOGIN_USER", { email: user.email });
+
       this.$router.push({
         name: "user-boards",
         params: { username: user.username }
@@ -74,6 +81,10 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  max-width: 400px;
+}
+
 .footer {
   bottom: 0px;
 

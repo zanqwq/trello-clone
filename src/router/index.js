@@ -1,6 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Login from "../views/Login.vue";
+import Logout from "../views/Logout.vue";
+import Signup from "../views/Signup";
 import BoardsAndTemplates from "../views/BoardsAndTemplates.vue";
 import Board from "../views/Board";
 import Pricing from "../views/Pricing.vue";
@@ -14,9 +17,6 @@ import Activity from "../views/user/Activity.vue";
 import Cards from "../views/user/Cards.vue";
 import Account from "../views/user/Account.vue";
 import Billing from "../views/user/Billing.vue";
-import Login from "../views/Login.vue";
-import Logout from "../views/Logout.vue";
-import Signup from "../views/Signup";
 import NotFound from "../views/NotFound.vue";
 import Test from "../views/Test.vue";
 import store from "../store/index.js";
@@ -69,14 +69,19 @@ const routes = [
       ) {
         next({ name: "not-found" });
       }
-      console.log(to.path);
       next();
     }
   },
   {
     path: "/board/:id/:title",
     name: "board",
-    component: Board
+    component: Board,
+    beforeEnter(to, from, next) {
+      if (!store.state.user || !store.getters.getBoardById(to.params.id)) {
+        next({ name: "not-found" });
+      }
+      next();
+    }
   },
   {
     path: "/pricing",

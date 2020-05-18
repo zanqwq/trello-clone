@@ -448,7 +448,7 @@ export default {
 
 <style scoped>
 .body {
-  margin-top: 3rem;
+  margin-top: 5rem;
 }
 
 .sidebar {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar type="dark" variant="dark" fixed="top">
-      <b-navbar-brand href="#">Trello Clone</b-navbar-brand>
+      <b-navbar-brand to="/home">Trello Clone</b-navbar-brand>
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
@@ -18,7 +18,7 @@
             variant="primary"
             :to="{
               name: 'user-boards',
-              params: { username: this.$store.state.user.username }
+              params: { username: user.username }
             }"
           >
             Go to Your Boards
@@ -30,10 +30,12 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   computed: {
+    ...mapState(["user"]),
     hasLogin() {
-      return this.$store.state.user;
+      return this.user;
     }
   }
 };

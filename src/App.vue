@@ -5,10 +5,7 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-export default {
-  component: Header
-};
+export default {};
 </script>
 
 <style scoped></style>
