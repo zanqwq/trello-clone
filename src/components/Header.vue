@@ -20,7 +20,11 @@
               <b-icon icon="grid3x3-gap"></b-icon>
             </b-button>
 
-            <b-button size="sm" class="mr-1">
+            <b-button
+              size="sm"
+              class="mr-1"
+              :to="{ name: 'user-boards', params: { username: user.username } }"
+            >
               <b-icon icon="house-fill"></b-icon>
             </b-button>
 
