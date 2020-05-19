@@ -29,23 +29,25 @@
     </div>
 
     <div class="list-cards position-relative">
-      <Card
-        class="my-1 px-2 py-1 rounded-lg text-wrap shadow-sm"
-        v-for="(card, cardIndex) of cards"
-        :key="card.id"
-        :title="card.title"
-        :description="card.description"
-        @edit-card="$emit('edit-card', card)"
-        @remove-card="removeCard(cards, cardIndex)"
-        @drag-start="
-          ondragstart($event, {
-            dragType: 'card',
-            fromListIndex: listIndex,
-            fromCardIndex: cardIndex
-          })
-        "
-        @drop-on-card="dropOnCard($event, cards, cardIndex)"
-      ></Card>
+      <transition-group name="card" tag="div">
+        <Card
+          class="my-1 px-2 py-1 rounded-lg text-wrap shadow-sm"
+          v-for="(card, cardIndex) of cards"
+          :key="card.id"
+          :title="card.title"
+          :description="card.description"
+          @edit-card="$emit('edit-card', card)"
+          @remove-card="removeCard(cards, cardIndex)"
+          @drag-start="
+            ondragstart($event, {
+              dragType: 'card',
+              fromListIndex: listIndex,
+              fromCardIndex: cardIndex
+            })
+          "
+          @drop-on-card="dropOnCard($event, cards, cardIndex)"
+        ></Card>
+      </transition-group>
     </div>
 
     <!-- card adder -->
@@ -212,5 +214,20 @@ export default {
 
 .card-adder {
   height: 40px;
+}
+
+.card-enter,
+.card-leave-to {
+  opacity: 0;
+  transform: translateX(-400px);
+}
+
+.card-enter-active,
+.card-leave-active {
+  transition: all 0.5s ease-in-out;
+}
+
+.card-move {
+  transition: all 0.5s ease-in-out;
 }
 </style>

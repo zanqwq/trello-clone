@@ -14,26 +14,32 @@
 
     <div class="body d-flex align-items-start overflow-auto">
       <!-- lists of board -->
-      <List
-        class="ml-3 p-2 rounded shadow"
-        v-for="(list, listIndex) of lists"
-        :key="list.id"
-        :lists="lists"
-        :listIndex="listIndex"
-        :title="list.title"
-        :cards="list.cards"
-        @edit-list-title="editListTitle($event, list)"
-        @remove-list="removeList(listIndex)"
-        @edit-card="openModal($event)"
-        @drag-start="
-          ondragstart($event, {
-            dragType: 'list',
-            fromListIndex: listIndex
-          })
-        "
-        @drop-on-list="dropOnList($event, listIndex)"
+      <transition-group
+        name="list"
+        tag="div"
+        class="d-flex align-items-start overflow-auto"
       >
-      </List>
+        <List
+          class="ml-3 p-2 rounded shadow"
+          v-for="(list, listIndex) of lists"
+          :key="list.id"
+          :lists="lists"
+          :listIndex="listIndex"
+          :title="list.title"
+          :cards="list.cards"
+          @edit-list-title="editListTitle($event, list)"
+          @remove-list="removeList(listIndex)"
+          @edit-card="openModal($event)"
+          @drag-start="
+            ondragstart($event, {
+              dragType: 'list',
+              fromListIndex: listIndex
+            })
+          "
+          @drop-on-list="dropOnList($event, listIndex)"
+        >
+        </List>
+      </transition-group>
 
       <!-- list adder -->
       <div class="ml-3">
@@ -211,6 +217,7 @@ export default {
   max-width: 350px;
   height: 3rem;
   border: none;
+  transition: all 1s ease-in-out;
 }
 
 .list-adder:focus {
@@ -233,5 +240,20 @@ export default {
   outline: none;
   background: rgb(223, 223, 223);
   cursor: text;
+}
+
+.list-enter,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(200px);
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease-in-out;
+}
+
+.list-move {
+  transition: all 0.5s ease-in-out;
 }
 </style>
