@@ -187,7 +187,7 @@
           <div class="text-center">
             <b-card
               title="The Team Playbook"
-              img-src="https://picsum.photos/600/300/?image=7"
+              img-src="0.jpg"
               img-alt="Image"
               img-top
               tag="article"
@@ -210,7 +210,7 @@
           <div class="text-center">
             <b-card
               title="A Productivity Platform"
-              img-src="https://picsum.photos/600/300/?image=20"
+              img-src="1.jpg"
               img-alt="Image"
               img-top
               tag="article"
@@ -235,7 +235,7 @@
           <div class="text-center">
             <b-card
               title="Always In Sync"
-              img-src="https://picsum.photos/600/300/?image=3"
+              img-src="2.jpg"
               img-alt="Image"
               img-top
               tag="article"
