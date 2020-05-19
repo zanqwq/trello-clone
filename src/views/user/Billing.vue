@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p>billing</p>
+  <div class="text-center">
+    <h3>Billing page</h3>
   </div>
 </template>
 

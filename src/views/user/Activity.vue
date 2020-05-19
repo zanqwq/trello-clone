@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p>activity</p>
+  <div class="text-center">
+    <h3>Activity page</h3>
   </div>
 </template>
 

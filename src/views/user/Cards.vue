@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p>cards</p>
+  <div class="text-center">
+    <h3>Cards page</h3>
   </div>
 </template>
 

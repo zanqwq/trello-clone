@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p>account</p>
+  <div class="text-center">
+    <h3>Account settings page</h3>
   </div>
 </template>
 
