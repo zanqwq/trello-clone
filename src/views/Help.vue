@@ -93,12 +93,12 @@
         <div
           class="category d-flex align-items-center justify-content-center m-3 shadow"
         >
-          Using Trello
+          Using Trello clone
         </div>
         <div
           class="category d-flex align-items-center justify-content-center m-3 shadow"
         >
-          My Trello Account
+          My Trello clone Account
         </div>
         <div
           class="category d-flex align-items-center justify-content-center m-3 shadow"
@@ -138,7 +138,7 @@
         <div
           class="category d-flex align-items-center justify-content-center m-3 shadow"
         >
-          Trello for Android
+          Trello clone for Android
         </div>
         <div
           class="category d-flex align-items-center justify-content-center m-3 shadow"

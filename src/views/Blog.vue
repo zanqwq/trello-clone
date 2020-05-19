@@ -48,7 +48,7 @@
             </b-col>
             <b-col cols="12" md="6">
               <div class="blog w-100 m-2 p-3 rounded-lg shadow">
-                Educate From Anywhere: How To Use Trello As A Teacher
+                Educate From Anywhere: How To Use Trello clone As A Teacher
               </div>
             </b-col>
             <b-col cols="12" md="6">
@@ -59,18 +59,18 @@
             </b-col>
             <b-col cols="12" md="6">
               <div class="blog w-100 m-2 p-3 rounded-lg shadow">
-                How To Make Remote Communication More Efficient With Trello And
-                Zoom
+                How To Make Remote Communication More Efficient With Trello
+                clone And Zoom
               </div>
             </b-col>
             <b-col cols="12" md="6">
               <div class="blog w-100 m-2 p-3 rounded-lg shadow">
-                3 Ways Trello Will Change How Your Remote Team Brainstorms
+                3 Ways Trello clone Will Change How Your Remote Team Brainstorms
               </div>
             </b-col>
             <b-col cols="12" md="6">
               <div class="blog w-100 m-2 p-3 rounded-lg shadow">
-                Power-Up Your Remote Team: The Best Trello Power-Ups For
+                Power-Up Your Remote Team: The Best Trello clone Power-Ups For
                 Crushing WFH
               </div>
             </b-col>
@@ -81,7 +81,7 @@
             </b-col>
             <b-col cols="12" md="6">
               <div class="blog w-100 m-2 p-3 rounded-lg shadow">
-                How To Find Popular Trello Templates—Including Remote Work
+                How To Find Popular Trello clone Templates—Including Remote Work
               </div>
             </b-col>
           </b-row>
