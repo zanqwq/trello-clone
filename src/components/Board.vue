@@ -217,7 +217,6 @@ export default {
   max-width: 350px;
   height: 3rem;
   border: none;
-  transition: all 1s ease-in-out;
 }
 
 .list-adder:focus {
