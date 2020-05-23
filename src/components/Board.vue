@@ -14,11 +14,7 @@
 
     <div class="body d-flex align-items-start overflow-auto">
       <!-- lists of board -->
-      <transition-group
-        name="list"
-        tag="div"
-        class="d-flex align-items-start overflow-auto"
-      >
+      <transition-group name="list" tag="div" class="d-flex align-items-start">
         <List
           class="ml-3 p-2 rounded shadow"
           v-for="(list, listIndex) of lists"
