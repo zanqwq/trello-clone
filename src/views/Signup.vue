@@ -19,7 +19,7 @@
         ></b-form-input>
 
         <b-form-invalid-feedback :state="state">
-          this account is not exist
+          this account is already exist
         </b-form-invalid-feedback>
         <b-form-input
           class="my-3"
