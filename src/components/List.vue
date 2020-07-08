@@ -22,7 +22,7 @@
         placeholder="edit your card title here"
         :value="title"
         @input="$emit('edit-list-title', $event)"
-        @focus="isEditing = true"
+        @click="isEditing = true"
         @blur="isEditing = false"
         @keyup.enter="$event.target.blur()"
       />

@@ -141,19 +141,16 @@ export default {
 
       let listDropOnList = dragType === "list";
       let cardDropOnList = dragType === "card";
+      let lists = this.board.lists;
+      let fromListIndex = data.fromListIndex;
 
       if (listDropOnList) {
-        let lists = this.board.lists;
-        let fromListIndex = data.fromListIndex;
         this.$store.commit("MOVE_LIST", { lists, fromListIndex, toListIndex });
-        //
       } else if (cardDropOnList) {
-        let lists = this.board.lists;
-        let fromListIndex = data.fromListIndex;
         let fromCards = lists[fromListIndex].cards;
         let fromCardIndex = data.fromCardIndex;
         let toCards = lists[toListIndex].cards;
-        // if a card is frop on a list then put this card at the end of those cards
+        // if a card is drop on a list then put this card at the end of those cards
         let toCardIndex = toCards.length;
 
         this.$store.commit("MOVE_CARD", {
