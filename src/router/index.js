@@ -17,6 +17,7 @@ import Activity from "../views/user/Activity.vue";
 import Cards from "../views/user/Cards.vue";
 import Account from "../views/user/Account.vue";
 import Billing from "../views/user/Billing.vue";
+import NotFound from "../views/NotFound.vue";
 import store from "../store/index.js";
 
 Vue.use(VueRouter);
@@ -145,12 +146,13 @@ const routes = [
   },
   {
     path: "*",
-    redirect: "/home"
+    name: "not-found",
+    component: NotFound
   }
 ];
 
 const router = new VueRouter({
-  mode: "hash",
+  hash: true,
   base: process.env.BASE_URL,
   routes
 });
